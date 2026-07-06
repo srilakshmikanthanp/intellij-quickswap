@@ -1,0 +1,47 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+  <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+  <id>com.srilakshmikanthanp.intellij.quickswap</id>
+
+  <!-- Public plugin name should be written in Title Case. -->
+  <name>QuickSwap</name>
+
+  <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+  <vendor url="https://github.com/srilakshmikanthanp">srilakshmikanthanp</vendor>
+
+  <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager. -->
+  <description><![CDATA[
+    QuickSwap is an IntelliJ IDEA plugin that allows you to quickly compile and hot
+    swap Java files in your project. It provides actions to compile and hot
+    swap selected files, selected changes from VCS, and all modified files in VCS.
+  ]]></description>
+
+  <!-- Product and plugin compatibility requirements. -->
+  <depends>com.intellij.java</depends>
+  <depends>com.intellij.modules.vcs</depends>
+
+  <resource-bundle>messages.MessageBundle</resource-bundle>
+
+  <actions>
+    <action
+      id="QuickSwap.CompileAndHotSwap"
+      class="com.srilakshmikanthanp.intellij.quickswap.action.QuickSwapSelectedFilesAction"
+    >
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+      <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+    </action>
+
+    <action
+       id="QuickSwap.CompileAndHotSwapSelectedChanges"
+       class="com.srilakshmikanthanp.intellij.quickswap.action.QuickSwapSelectedChangesAction"
+    >
+      <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+    </action>
+
+    <action
+       id="QuickSwap.CompileAndHotSwapAllGitModified"
+       class="com.srilakshmikanthanp.intellij.quickswap.action.QuickSwapVcsChangesAction"
+    />
+  </actions>
+
+</idea-plugin>
