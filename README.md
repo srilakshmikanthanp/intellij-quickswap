@@ -1,5 +1,7 @@
 # QuickSwap
 
+[![Install from JetBrains Marketplace](https://img.shields.io/badge/JetBrains%20Marketplace-Install%20Plugin-000000?logo=jetbrains)](https://plugins.jetbrains.com/plugin/32787)
+
 QuickSwap extends IntelliJ IDEA's standard HotSwap, letting you selectively reload only the files you choose into a running debug session.
 
 ## Features
