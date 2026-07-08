@@ -11,9 +11,14 @@
 
   <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager. -->
   <description><![CDATA[
-    QuickSwap is an IntelliJ IDEA plugin that allows you to quickly compile and hot
-    swap Source files in your project. It provides actions to compile and hot
-    swap selected files, selected changes from VCS, and all modified files in VCS.
+    QuickSwap is an IntelliJ IDEA plugin that extends IntelliJ IDEA's
+    HotSwap functionality by adding actions to compile and hot swap:
+
+    <ul>
+      <li>Selected files</li>
+      <li>Selected changed files</li>
+      <li>All modified files</li>
+    </ul>
   ]]></description>
 
   <!-- Product and plugin compatibility requirements. -->
