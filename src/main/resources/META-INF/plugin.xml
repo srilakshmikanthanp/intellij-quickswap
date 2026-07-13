@@ -45,7 +45,7 @@
 
     <action
        id="QuickSwap.CompileAndHotSwapAllGitModified"
-       class="com.srilakshmikanthanp.intellij.quickswap.action.QuickSwapVcsChangesAction"
+       class="com.srilakshmikanthanp.intellij.quickswap.action.QuickSwapVCSChangesAction"
     />
   </actions>
 

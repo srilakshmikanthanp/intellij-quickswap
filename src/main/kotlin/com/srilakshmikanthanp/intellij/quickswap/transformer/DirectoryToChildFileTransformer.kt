@@ -1,29 +1,32 @@
 package com.srilakshmikanthanp.intellij.quickswap.transformer
 
-import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 
 class DirectoryToChildFileTransformer : FileTransformer {
-  private fun getChildFiles(file: VirtualFile): List<VirtualFile> {
-    val childFiles = mutableListOf<VirtualFile>()
-    VfsUtilCore.iterateChildrenRecursively(file, null) { childFile ->
-      if (!childFile.isDirectory) {
-        childFiles.add(childFile)
+  private fun getChildFiles(file: VirtualFile): Sequence<VirtualFile> = sequence {
+    val filesToVisit = ArrayDeque<VirtualFile>()
+    filesToVisit.addFirst(file)
+
+    while (filesToVisit.isNotEmpty()) {
+      val currentFile = filesToVisit.removeFirst()
+      if (currentFile.isDirectory) {
+        val children = currentFile.children
+        for (index in children.indices.reversed()) {
+          filesToVisit.addFirst(children[index])
+        }
+      } else {
+        yield(currentFile)
       }
-      true
     }
-    return childFiles
   }
 
-  override fun transform(files: Collection<VirtualFile>): List<VirtualFile> {
-    val childFiles = mutableListOf<VirtualFile>()
-    for (file in files) {
+  override fun transform(files: Sequence<VirtualFile>): Sequence<VirtualFile> {
+    return files.flatMap { file ->
       if (file.isDirectory) {
-        childFiles.addAll(getChildFiles(file))
+        getChildFiles(file)
       } else {
-        childFiles.add(file)
+        sequenceOf(file)
       }
     }
-    return childFiles
   }
 }

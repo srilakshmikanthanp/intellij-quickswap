@@ -9,14 +9,15 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.srilakshmikanthanp.intellij.quickswap.swap.HotSwapUIQuickSwapper
 
 abstract class QuickSwapBaseAction : AnAction() {
-  protected abstract fun sourceFiles(project: Project, eventDataProvider: EventDataProvider): List<VirtualFile>
-  protected abstract fun enable(project: Project, eventDataProvider: EventDataProvider): Boolean
+  protected abstract fun sourceFiles(project: Project, eventDataProvider: EventDataProvider): Sequence<VirtualFile>
+  protected open fun supports(project: Project, eventDataProvider: EventDataProvider): Boolean = true
 
   private fun enable(event: AnActionEvent): Boolean {
     val project = event.project ?: return false
     val session = DebuggerManagerEx.getInstanceEx(project).context.debuggerSession ?: return false
     if (!session.isAttached) return false
-    return session.isAttached && session.process.canRedefineClasses() && enable(project, EventDataProvider(event))
+    val eventDataProvider = EventDataProvider(event)
+    return session.process.canRedefineClasses() && supports(project, eventDataProvider) && sourceFiles(project, eventDataProvider).any()
   }
 
   final override fun getActionUpdateThread(): ActionUpdateThread {
@@ -31,7 +32,7 @@ abstract class QuickSwapBaseAction : AnAction() {
     val project = event.project ?: return
     val session = DebuggerManagerEx.getInstanceEx(project).context.debuggerSession ?: return
     val quickSwapper = HotSwapUIQuickSwapper(session)
-    val files = sourceFiles(project, EventDataProvider(event))
+    val files = sourceFiles(project, EventDataProvider(event)).toList()
     if (files.isEmpty()) return
     quickSwapper.swap(*files.toTypedArray())
   }
